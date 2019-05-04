@@ -46,5 +46,9 @@ namespace LecturaDeTextos.Transversal
         {
             return tablaLiterales;
         }
+        public static TablaLiterales limpiarTabla()
+        {
+            return Instancia = new TablaLiterales();
+        }
     }
 }

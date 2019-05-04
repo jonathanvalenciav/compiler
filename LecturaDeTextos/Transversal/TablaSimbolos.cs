@@ -47,6 +47,11 @@ namespace LecturaDeTextos.Transversal
             return tablaSimbolos;
         }
 
+        public static TablaSimbolos limpiarTabla()
+        {
+            return Instancia = new TablaSimbolos();
+        }
+
 
     }
 }

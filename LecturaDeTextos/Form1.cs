@@ -63,5 +63,21 @@ namespace LecturaDeTextos
             }
             textBoxPorConsola.Clear();
         }
+
+        private void buttonRestablecer_Click(object sender, EventArgs e)
+        {
+            textBoxPorConsola.Clear();
+            TablaLiterales.limpiarTabla();
+            TablaMaestro.limpiarTabla();
+            Transversal.TablaSimbolos.limpiarTabla();
+
+
+                
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

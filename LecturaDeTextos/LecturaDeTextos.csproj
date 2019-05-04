@@ -57,7 +57,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transversal\Cache.cs" />
     <Compile Include="Transversal\ComponenteLexico.cs" />
+    <Compile Include="Transversal\Error.cs" />
     <Compile Include="Transversal\Linea.cs" />
+    <Compile Include="Transversal\ManejadorErrores.cs" />
+    <Compile Include="Transversal\TablaDummy.cs" />
+    <Compile Include="Transversal\TablaLiterales.cs" />
+    <Compile Include="Transversal\TablaMaestro.cs" />
+    <Compile Include="Transversal\TablaPalabrasReservadas.cs" />
+    <Compile Include="Transversal\TablaSimbolos.cs" />
+    <Compile Include="Transversal\TipoComponenteLexico.cs" />
+    <Compile Include="Transversal\TipoError.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

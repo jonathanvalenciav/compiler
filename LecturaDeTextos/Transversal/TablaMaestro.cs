@@ -57,5 +57,10 @@ namespace LecturaDeTextos.Transversal
             }
             return retorno;
         }
+
+        public static TablaMaestro limpiarTabla()
+        {
+            return Instancia;
+        }
     }
 }

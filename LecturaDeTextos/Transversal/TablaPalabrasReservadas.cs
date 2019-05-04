@@ -66,5 +66,6 @@ namespace LecturaDeTextos.Transversal
                 componenteLexico.Categoria = tablaInicial[componenteLexico.Lexema.ToUpper()].Categoria;
             }
         }
+        
     }
 }
