@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LecturaDeTextos.Transversal
 {
@@ -32,8 +29,5 @@ namespace LecturaDeTextos.Transversal
             impresion.Append("Posicion Final --> " + posicionFinal + "\n");
             return impresion.ToString();
         }
-
-
-
     }
 }
