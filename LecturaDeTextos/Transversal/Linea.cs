@@ -8,10 +8,13 @@ namespace LecturaDeTextos.Transversal
 {
     public class Linea
     {
-        public int Numero { get; }
-        public String Contenido { get; }
+        public int Numero { get; set; }
+        public String Contenido { get; set; }
 
-        public Linea(int numero, String contenido) {
+        public Linea() { }
+
+        public Linea(int numero, String contenido)
+        {
             this.Numero = numero;
             this.Contenido = contenido;
         }
