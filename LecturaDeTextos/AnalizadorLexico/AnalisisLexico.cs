@@ -198,8 +198,9 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 5:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "CAMPO", numeroLineaActual,
-                            puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "CAMPO",
+                            numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 6:
@@ -218,8 +219,9 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 7:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "IDENTIFICADOR", numeroLineaActual,
+                        componenteLexico = ComponenteLexico.Crear(lexema, "IDENTIFICADOR", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
+
                         break;
 
                     case 8:
@@ -329,27 +331,28 @@ namespace LecturaDeTextos.AnalizadorLexico
                     case 15:
                         devolverPuntero();
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "NUMERO DECIMAL", numeroLineaActual,
+                        componenteLexico = ComponenteLexico.Crear(lexema, "NUMERO DECIMAL", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 16:               
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "SUMA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "SUMA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         break;
 
                     case 17:        
-                        componenteLexico = new ComponenteLexico(lexema, "RESTA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "RESTA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
 
                     case 18:                   
-                        componenteLexico = new ComponenteLexico(lexema, "MULTIPLICACION", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MULTIPLICACION", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
 
                     case 19:
-                        componenteLexico = new ComponenteLexico(lexema, "DIVISION", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "DIVISION", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
 
@@ -373,8 +376,9 @@ namespace LecturaDeTextos.AnalizadorLexico
                     case 21:
                         devolverPuntero();
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "NUMERO ENTERO", numeroLineaActual,
+                        componenteLexico = ComponenteLexico.Crear(lexema, "NUMERO ENTERO", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 22:
@@ -391,34 +395,40 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 23:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "DIFERENTE QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "DIFERENTE QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 24:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "MENOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MENOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 25:
                         devolverPuntero();
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "MENOR QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MENOR QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 26:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "MAYOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MAYOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 27:
                         devolverPuntero();
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "MAYOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MAYOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 28:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "ASIGNACIÓN", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "ASIGNACIÓN", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 29:
@@ -441,13 +451,14 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 31:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "DIFERENTE QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "DIFERENTE QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 32:
                         //devolverPuntero();
                         //componenteLexico = new ComponenteLexico(null, "ERROR!, ASIGANCIÓN NO VALIDA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                        componenteLexico = new ComponenteLexico(lexema, "FIN DE LINEA", numeroLineaActual,
+                        componenteLexico = ComponenteLexico.Crear(lexema, "FIN DE LINEA", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
@@ -475,8 +486,9 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 35:
                         continuarAnalisis = false;
-                        componenteLexico = new ComponenteLexico(lexema, "TABLA", numeroLineaActual,
+                        componenteLexico = ComponenteLexico.Crear(lexema, "TABLA", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 36:

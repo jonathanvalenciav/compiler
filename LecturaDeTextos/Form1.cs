@@ -69,6 +69,7 @@ namespace LecturaDeTextos
             textBoxPorConsola.Clear();
             TablaLiterales.limpiarTabla();
             TablaMaestro.limpiarTabla();
+            TablaDummy.limpiarTabla();
             Transversal.TablaSimbolos.limpiarTabla();
             Cache.obtenerCache().limpiarCache();
 

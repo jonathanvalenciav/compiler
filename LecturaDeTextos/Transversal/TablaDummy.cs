@@ -47,5 +47,10 @@ namespace LecturaDeTextos.Transversal
             return tablaDummy;
         }
 
+        public static void limpiarTabla()
+        {
+            Instancia = new TablaDummy();
+        }
+
     }
 }

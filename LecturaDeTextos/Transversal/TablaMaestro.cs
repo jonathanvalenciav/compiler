@@ -58,9 +58,9 @@ namespace LecturaDeTextos.Transversal
             return retorno;
         }
 
-        public static TablaMaestro limpiarTabla()
+        public static void limpiarTabla()
         {
-            return Instancia;
+            Instancia = new TablaMaestro();
         }
     }
 }

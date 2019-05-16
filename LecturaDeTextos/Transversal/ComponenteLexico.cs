@@ -15,7 +15,7 @@ namespace LecturaDeTextos.Transversal
         public int posicionFinal { get; set; }
         public TipoComponenteLexico tipo { get; set; }
 
-        public ComponenteLexico(String Lexema, String Categoria, int numeroLinea, int posicionInicial, int posicionFinal)
+        private ComponenteLexico(String Lexema, String Categoria, int numeroLinea, int posicionInicial, int posicionFinal)
         {
             this.Lexema = Lexema;
             this.Categoria = Categoria;
