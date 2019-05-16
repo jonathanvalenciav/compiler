@@ -38,5 +38,10 @@ namespace LecturaDeTextos.Transversal
         public void limpiar(){
             lineas.Clear();
         }
+
+        public void limpiarCache()
+        {
+            INSTANCIA = new Cache();
+        }
     }
 }

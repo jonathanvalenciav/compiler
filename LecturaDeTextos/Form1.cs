@@ -70,6 +70,7 @@ namespace LecturaDeTextos
             TablaLiterales.limpiarTabla();
             TablaMaestro.limpiarTabla();
             Transversal.TablaSimbolos.limpiarTabla();
+            Cache.obtenerCache().limpiarCache();
 
 
                 
@@ -77,6 +78,21 @@ namespace LecturaDeTextos
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // CODIGO
+            AnalisisLexico analex = new AnalisisLexico();
+            ComponenteLexico tmp = analex.analizar();
+
+            while (!"@EOF@".Equals(tmp.Lexema))
+            {
+                MessageBox.Show(tmp.Imprimir());
+                tmp = analex.analizar();
+            }
+            textBoxPorConsola.Clear();
 
         }
     }
