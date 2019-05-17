@@ -26,7 +26,6 @@ namespace LecturaDeTextos.Transversal
             tablaInicial.Add("JOIN",ComponenteLexico.Crear("JOIN", "Join"));
             tablaInicial.Add("ASC",ComponenteLexico.Crear("ASC", "Asc"));
             tablaInicial.Add("DESC",ComponenteLexico.Crear("DESC", "Desc"));
-            tablaInicial.Add("DESC",ComponenteLexico.Crear("DESC", "Desc"));
         }
         public static TablaPalabrasReservadas obtenerTablaPalabrasReservadas()
         {

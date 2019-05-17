@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LecturaDeTextos.Transversal;
 using LecturaDeTextos.AnalizadorLexico;
-
+using LecturaDeTextos.AnalizadorSintactico;
 
 namespace LecturaDeTextos
 {
@@ -61,7 +61,7 @@ namespace LecturaDeTextos
                 MessageBox.Show(tmp.Imprimir());
                 tmp = analex.analizar();
             }
-            textBoxPorConsola.Clear();
+            
         }
 
         private void buttonRestablecer_Click(object sender, EventArgs e)
@@ -72,9 +72,11 @@ namespace LecturaDeTextos
             TablaDummy.limpiarTabla();
             Transversal.TablaSimbolos.limpiarTabla();
             Cache.obtenerCache().limpiarCache();
+            MessageBox.Show("Analisís restablecido.");
 
 
-                
+
+
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -86,14 +88,24 @@ namespace LecturaDeTextos
         {
             // CODIGO
             AnalisisLexico analex = new AnalisisLexico();
+            AnalisisSintatico analix = new AnalisisSintatico();
             ComponenteLexico tmp = analex.analizar();
 
             while (!"@EOF@".Equals(tmp.Lexema))
             {
                 MessageBox.Show(tmp.Imprimir());
                 tmp = analex.analizar();
+                //analix.analizar();
+
             }
-            textBoxPorConsola.Clear();
+         
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // CODIGO
+                AnalisisSintatico analix = new AnalisisSintatico();
+                analix.analizar();
 
         }
     }

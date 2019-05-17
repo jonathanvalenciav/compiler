@@ -9,6 +9,9 @@ namespace LecturaDeTextos.AnalizadorLexico
         private int numeroLineaActual = 0;
         private String contenidoLineaActual;
         private String caracterActual;
+        private String causa;
+        private String falla;
+        private String solucion;
 
         public AnalisisLexico() {
             cargarNuevaLinea();
@@ -396,13 +399,13 @@ namespace LecturaDeTextos.AnalizadorLexico
                     case 23:
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "DIFERENTE QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                       TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 24:
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "MENOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                       TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 25:
@@ -488,7 +491,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "TABLA", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
-                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                       TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 36:
@@ -508,6 +511,12 @@ namespace LecturaDeTextos.AnalizadorLexico
                 }
             }
             return componenteLexico;
+        }
+
+        private Error formarError(String lexema, String causa, String falla, String solucion)
+        {
+            return Error.Crear(lexema, "Error", numeroLineaActual, puntero - lexema.Length, puntero - 1, causa,
+                falla, solucion, TipoError.LEXICO);
         }
     }
 }

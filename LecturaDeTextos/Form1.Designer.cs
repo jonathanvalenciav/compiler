@@ -43,6 +43,7 @@
             this.NumeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PosInicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PosFinal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button2 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.Analizador.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -122,6 +123,7 @@
             // 
             // Analizador
             // 
+            this.Analizador.Controls.Add(this.button2);
             this.Analizador.Controls.Add(this.label1);
             this.Analizador.Controls.Add(this.textBoxPorConsola);
             this.Analizador.Controls.Add(this.button1);
@@ -191,6 +193,19 @@
             this.PosFinal.HeaderText = "PosFinal";
             this.PosFinal.Name = "PosFinal";
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Gainsboro;
+            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button2.Location = new System.Drawing.Point(499, 163);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(178, 33);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "Analisis Sintactico";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -229,6 +244,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn NumeroLinea;
         private System.Windows.Forms.DataGridViewTextBoxColumn PosInicial;
         private System.Windows.Forms.DataGridViewTextBoxColumn PosFinal;
+        private System.Windows.Forms.Button button2;
     }
 }
 
