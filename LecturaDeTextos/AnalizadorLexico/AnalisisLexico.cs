@@ -145,6 +145,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         }
                         else if (",".Equals(caracterActual))
                         {
+                            lexema += caracterActual;
                             estadoActual = 41;
                         }
                         else
@@ -554,7 +555,7 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                         //Reportando el error
                         ManejadorErrores.obtenerManejadorErrores().
-                            agregarError(formarError(lexema, causa, falla, solucion));
+                            agregarError(formarError(lexema+caracterActual, causa, falla, solucion));
 
                         componenteLexico = ComponenteLexico.Crear(lexema + "0", "NUMERO DECIMAL", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
@@ -567,7 +568,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         //Estado de Error
                         continuarAnalisis = false;
                         causa = "Se esperaba un igual y recibió " + caracterActual + ".";
-                        falla = "diferente que mal formado";
+                        falla = "Diferente que mal formado";
                         solucion = "Asegurese que luego del ! exista un igual(=) para formar un diferente que.";
 
                         //Reportando el error

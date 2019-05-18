@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace LecturaDeTextos.Transversal
 {
-     class TablaPalabrasReservadas
+     public class TablaPalabrasReservadas
     {
         private Dictionary<String, List<ComponenteLexico>> tablaPalabrasReservadas = new Dictionary<String, List<ComponenteLexico>>();
         private Dictionary<String, ComponenteLexico> tablaInicial = new Dictionary<String, ComponenteLexico>();
 
         private static TablaPalabrasReservadas Instancia = new TablaPalabrasReservadas();
-        private TablaPalabrasReservadas()
+        public TablaPalabrasReservadas()
         {
             //Asi con todas 
             tablaInicial.Add("SELECT",ComponenteLexico.Crear("SELECT","select"));
@@ -65,6 +65,7 @@ namespace LecturaDeTextos.Transversal
                 componenteLexico.Categoria = tablaInicial[componenteLexico.Lexema.ToUpper()].Categoria;
             }
         }
-        
+
+  
     }
 }

@@ -8,14 +8,14 @@ namespace LecturaDeTextos.Transversal
 {
     public class Error
     {
-        private String Lexema { get; }
-        private String Categoria { get; }
-        private int numeroLinea { get; }
-        private int posicionInicial { get; }
-        private int posicionFinal { get; }
-        private String Causa { get; }
-        private String Falla { get; }
-        private String Solucion { get; }
+        public String Lexema { get; }
+        public String Categoria { get; }
+        public int numeroLinea { get; }
+        public int posicionInicial { get; }
+        public int posicionFinal { get; }
+        public String Causa { get; }
+        public String Falla { get; }
+        public String Solucion { get; }
         public TipoError Tipo { get; }
 
         private Error(String Lexema, String Categoria, int numeroLinea, int posicionInicial, int posicionFinal, String Causa,

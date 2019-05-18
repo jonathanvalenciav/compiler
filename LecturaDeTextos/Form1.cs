@@ -50,20 +50,6 @@ namespace LecturaDeTextos
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            // CODIGO
-            AnalisisLexico analex = new AnalisisLexico();
-            ComponenteLexico tmp = analex.analizar();
-
-            while (!"@EOF@".Equals(tmp.Lexema))
-            {
-                MessageBox.Show(tmp.Imprimir());
-                tmp = analex.analizar();
-            }
-            
-        }
-
         private void buttonRestablecer_Click(object sender, EventArgs e)
         {
             textBoxPorConsola.Clear();
@@ -79,25 +65,51 @@ namespace LecturaDeTextos
 
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             // CODIGO
             AnalisisLexico analex = new AnalisisLexico();
-            ComponenteLexico tmp = analex.analizar();
 
-            while (!"@EOF@".Equals(tmp.Lexema))
+            try
             {
-                MessageBox.Show(tmp.Imprimir());
-                tmp = analex.analizar();
-                //analix.analizar();
+                ComponenteLexico tmp = analex.analizar();
+                int fila = 0;
+                while (!"@EOF@".Equals(tmp.Lexema))
+                {
+                    
+                    TablaSimbolos.Rows.Add();
+                   
+                    TablaSimbolos[0, fila].Value = fila + 1;
+                    TablaSimbolos[1, fila].Value = tmp.tipo;
+                    TablaSimbolos[2, fila].Value = tmp.Lexema;
+                    TablaSimbolos[3, fila].Value = tmp.Categoria;
+                    TablaSimbolos[4, fila].Value = tmp.numeroLinea;
+                    TablaSimbolos[5, fila].Value = tmp.posicionInicial;
+                    TablaSimbolos[6, fila].Value = tmp.posicionFinal;
+                    fila++;
 
+
+
+
+                    TablaErrores.DataSource = ManejadorErrores.obtenerManejadorErrores().ObtenerErroresTotales();
+                    TablaReservadas.DataSource = TablaPalabrasReservadas.obtenerTablaPalabrasReservadas().obtenerPalabrasReservadas();
+                    tmp = analex.analizar();
+                    
+
+                    //MessageBox.Show(tmp.Imprimir());
+
+
+
+                }
+              
             }
-         
+
+            catch (Exception exp)
+            {
+                MessageBox.Show(exp.Message);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -107,5 +119,7 @@ namespace LecturaDeTextos
                 analix.analizar();
 
         }
+
+
     }
 }

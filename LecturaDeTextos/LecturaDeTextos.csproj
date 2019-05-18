@@ -81,6 +81,23 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Properties\DataSources\Form1.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.AnalizadorLexico.AnalisisLexico.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.AnalizadorSintactico.AnalisisSintacticoSQL.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.AnalizadorSintactico.AnalisisSintatico.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Properties.Settings.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.Cache.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.ComponenteLexico.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.Error.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.Linea.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.ManejadorErrores.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.TablaDummy.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.TablaLiterales.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.TablaMaestro.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.TablaPalabrasReservadas.datasource" />
+    <None Include="Properties\DataSources\LecturaDeTextos.Transversal.TablaSimbolos.datasource" />
+    <None Include="Properties\DataSources\Program.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

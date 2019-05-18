@@ -35,19 +35,28 @@
             this.textBoxPorConsola = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Analizador = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.Simbolos = new System.Windows.Forms.TabPage();
             this.TablaSimbolos = new System.Windows.Forms.DataGridView();
             this.Identificador = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Lexema = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Categoria = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NumeroLinea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PosInicial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PosFinal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Errores = new System.Windows.Forms.TabPage();
+            this.TablaErrores = new System.Windows.Forms.DataGridView();
+            this.Reservadas = new System.Windows.Forms.TabPage();
+            this.TablaReservadas = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.Analizador.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.Simbolos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaSimbolos)).BeginInit();
+            this.Errores.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaErrores)).BeginInit();
+            this.Reservadas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaReservadas)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -114,11 +123,13 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.Analizador);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.Simbolos);
+            this.tabControl1.Controls.Add(this.Errores);
+            this.tabControl1.Controls.Add(this.Reservadas);
             this.tabControl1.Location = new System.Drawing.Point(12, 21);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(703, 312);
+            this.tabControl1.Size = new System.Drawing.Size(808, 312);
             this.tabControl1.TabIndex = 17;
             // 
             // Analizador
@@ -132,27 +143,41 @@
             this.Analizador.Location = new System.Drawing.Point(4, 29);
             this.Analizador.Name = "Analizador";
             this.Analizador.Padding = new System.Windows.Forms.Padding(3);
-            this.Analizador.Size = new System.Drawing.Size(695, 279);
+            this.Analizador.Size = new System.Drawing.Size(800, 279);
             this.Analizador.TabIndex = 0;
             this.Analizador.Text = "Analizador";
             this.Analizador.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // button2
             // 
-            this.tabPage2.Controls.Add(this.TablaSimbolos);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(695, 279);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Tabla de símbolos";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.button2.BackColor = System.Drawing.Color.Gainsboro;
+            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button2.Location = new System.Drawing.Point(499, 163);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(178, 33);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "Analisis Sintactico";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // Simbolos
+            // 
+            this.Simbolos.Controls.Add(this.TablaSimbolos);
+            this.Simbolos.Location = new System.Drawing.Point(4, 29);
+            this.Simbolos.Name = "Simbolos";
+            this.Simbolos.Padding = new System.Windows.Forms.Padding(3);
+            this.Simbolos.Size = new System.Drawing.Size(800, 279);
+            this.Simbolos.TabIndex = 1;
+            this.Simbolos.Text = "Tabla de símbolos";
+            this.Simbolos.UseVisualStyleBackColor = true;
             // 
             // TablaSimbolos
             // 
             this.TablaSimbolos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TablaSimbolos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Identificador,
+            this.Tipo,
             this.Lexema,
             this.Categoria,
             this.NumeroLinea,
@@ -160,13 +185,18 @@
             this.PosFinal});
             this.TablaSimbolos.Location = new System.Drawing.Point(17, 27);
             this.TablaSimbolos.Name = "TablaSimbolos";
-            this.TablaSimbolos.Size = new System.Drawing.Size(646, 218);
+            this.TablaSimbolos.Size = new System.Drawing.Size(750, 218);
             this.TablaSimbolos.TabIndex = 18;
             // 
             // Identificador
             // 
             this.Identificador.HeaderText = "ID";
             this.Identificador.Name = "Identificador";
+            // 
+            // Tipo
+            // 
+            this.Tipo.HeaderText = "Tipo";
+            this.Tipo.Name = "Tipo";
             // 
             // Lexema
             // 
@@ -193,25 +223,48 @@
             this.PosFinal.HeaderText = "PosFinal";
             this.PosFinal.Name = "PosFinal";
             // 
-            // button2
+            // Errores
             // 
-            this.button2.BackColor = System.Drawing.Color.Gainsboro;
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button2.Location = new System.Drawing.Point(499, 163);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(178, 33);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Analisis Sintactico";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Errores.Controls.Add(this.TablaErrores);
+            this.Errores.Location = new System.Drawing.Point(4, 29);
+            this.Errores.Name = "Errores";
+            this.Errores.Size = new System.Drawing.Size(800, 279);
+            this.Errores.TabIndex = 3;
+            this.Errores.Text = "Tabla de errores";
+            this.Errores.UseVisualStyleBackColor = true;
+            // 
+            // TablaErrores
+            // 
+            this.TablaErrores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaErrores.Location = new System.Drawing.Point(26, 29);
+            this.TablaErrores.Name = "TablaErrores";
+            this.TablaErrores.Size = new System.Drawing.Size(756, 218);
+            this.TablaErrores.TabIndex = 20;
+            // 
+            // Reservadas
+            // 
+            this.Reservadas.Controls.Add(this.TablaReservadas);
+            this.Reservadas.Location = new System.Drawing.Point(4, 29);
+            this.Reservadas.Name = "Reservadas";
+            this.Reservadas.Size = new System.Drawing.Size(800, 279);
+            this.Reservadas.TabIndex = 4;
+            this.Reservadas.Text = "Tabla de palabras reservadas";
+            this.Reservadas.UseVisualStyleBackColor = true;
+            // 
+            // TablaReservadas
+            // 
+            this.TablaReservadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaReservadas.Location = new System.Drawing.Point(22, 30);
+            this.TablaReservadas.Name = "TablaReservadas";
+            this.TablaReservadas.Size = new System.Drawing.Size(756, 218);
+            this.TablaReservadas.TabIndex = 21;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(738, 363);
+            this.ClientSize = new System.Drawing.Size(836, 363);
             this.Controls.Add(this.tabControl1);
             this.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -222,8 +275,12 @@
             this.tabControl1.ResumeLayout(false);
             this.Analizador.ResumeLayout(false);
             this.Analizador.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.Simbolos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaSimbolos)).EndInit();
+            this.Errores.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaErrores)).EndInit();
+            this.Reservadas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaReservadas)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -236,15 +293,20 @@
         private System.Windows.Forms.TextBox textBoxPorConsola;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage Analizador;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage Simbolos;
         private System.Windows.Forms.DataGridView TablaSimbolos;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TabPage Errores;
+        private System.Windows.Forms.TabPage Reservadas;
         private System.Windows.Forms.DataGridViewTextBoxColumn Identificador;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Tipo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Lexema;
         private System.Windows.Forms.DataGridViewTextBoxColumn Categoria;
         private System.Windows.Forms.DataGridViewTextBoxColumn NumeroLinea;
         private System.Windows.Forms.DataGridViewTextBoxColumn PosInicial;
         private System.Windows.Forms.DataGridViewTextBoxColumn PosFinal;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataGridView TablaErrores;
+        private System.Windows.Forms.DataGridView TablaReservadas;
     }
 }
 

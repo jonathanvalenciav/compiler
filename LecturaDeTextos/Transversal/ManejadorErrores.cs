@@ -11,7 +11,7 @@ namespace LecturaDeTextos.Transversal
         private static ManejadorErrores Instancia = new ManejadorErrores();
         private Dictionary<TipoError, List<Error>> mapaErrores = new Dictionary<TipoError, List<Error>>();
 
-        private ManejadorErrores()
+        public ManejadorErrores()
         {
 
         }
@@ -57,6 +57,11 @@ namespace LecturaDeTextos.Transversal
             }
 
             return existenErrores;
+        }
+
+        public List<Error> ObtenerErroresTotales()
+        {
+            return mapaErrores.Values.SelectMany(simbolo => simbolo).ToList();
         }
 
     }
