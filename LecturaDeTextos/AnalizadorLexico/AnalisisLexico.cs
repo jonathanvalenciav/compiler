@@ -13,19 +13,23 @@ namespace LecturaDeTextos.AnalizadorLexico
         private String falla;
         private String solucion;
 
-        public AnalisisLexico() {
+        public AnalisisLexico()
+        {
             cargarNuevaLinea();
         }
 
-        private void cargarNuevaLinea() {
-            if (!"@EOF@".Equals(contenidoLineaActual)) {
+        private void cargarNuevaLinea()
+        {
+            if (!"@EOF@".Equals(contenidoLineaActual))
+            {
                 numeroLineaActual++;
                 puntero = 1;
                 contenidoLineaActual = Cache.obtenerCache().obtenerLinea(numeroLineaActual).Contenido;
             }
         }
 
-        private void leerSiguienteCaracter() {
+        private void leerSiguienteCaracter()
+        {
             if ("@EOF@".Equals(contenidoLineaActual))
             {
                 caracterActual = "@EOF@";
@@ -42,18 +46,22 @@ namespace LecturaDeTextos.AnalizadorLexico
             }
         }
 
-        private void devolverPuntero(){
+        private void devolverPuntero()
+        {
             puntero--;
         }
 
-        public ComponenteLexico analizar() {
+        public ComponenteLexico analizar()
+        {
             int estadoActual = 0;
             bool continuarAnalisis = true;
             String lexema = "";
             ComponenteLexico componenteLexico = null;
 
-            while (continuarAnalisis) {
-                switch (estadoActual){
+            while (continuarAnalisis)
+            {
+                switch (estadoActual)
+                {
                     case 0:
                         leerSiguienteCaracter();
                         while ("".Equals(caracterActual.Trim()))
@@ -70,12 +78,12 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                             estadoActual = 8;
                         }
-                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]) && 
+                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]) &&
                             !("C".Equals(caracterActual) || "T".Equals(caracterActual)))
                         {
                             lexema += caracterActual;
                             estadoActual = 6;
-                        }                        
+                        }
                         else if (Char.IsDigit(caracterActual.ToCharArray()[0]))
                         {
                             lexema += caracterActual;
@@ -96,10 +104,10 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                             estadoActual = 18;
                         }
-                        else if (",".Equals(caracterActual))
+                        else if ("'".Equals(caracterActual))
                         {
                             lexema += caracterActual;
-                            estadoActual = 21;
+                            estadoActual = 20;
                         }
                         else if ("=".Equals(caracterActual))
                         {
@@ -125,7 +133,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         {
                             lexema += caracterActual;
                             estadoActual = 25;
-                        }                       
+                        }
                         else if (("@EOF@".Equals(caracterActual)))
                         {
                             lexema = caracterActual;
@@ -135,9 +143,13 @@ namespace LecturaDeTextos.AnalizadorLexico
                         {
                             estadoActual = 33;
                         }
+                        else if (",".Equals(caracterActual))
+                        {
+                            estadoActual = 41;
+                        }
                         else
                         {
-                           // estadoActual = 18; este para simbolo inválido
+                            estadoActual = 40;
                         }
                         break;
 
@@ -153,7 +165,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         {
                             lexema += caracterActual;
                             estadoActual = 2;
-                        }                         
+                        }
                         break;
 
                     case 2:
@@ -164,8 +176,8 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                             estadoActual = 3;
                         }
-                        else if(Char.IsLetter(caracterActual.ToCharArray()[0]))
-                        { 
+                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]))
+                        {
                             estadoActual = 6;
                         }
                         break;
@@ -178,7 +190,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                             estadoActual = 4;
                         }
-                        else if(Char.IsLetter(caracterActual.ToCharArray()[0]))
+                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]))
                         {
                             lexema += caracterActual;
                             estadoActual = 6;
@@ -187,19 +199,21 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 4:
                         leerSiguienteCaracter();
-                        
-                        if ( "_".Equals(caracterActual) || 
+
+                        if ("_".Equals(caracterActual) ||
                             Char.IsLetter(caracterActual.ToCharArray()[0]))
                         {
                             lexema += caracterActual;
                             estadoActual = 4;
                         }
-                        else {
+                        else
+                        {
                             estadoActual = 5;
                         }
                         break;
 
                     case 5:
+                        devolverPuntero();
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "CAMPO",
                             numeroLineaActual, puntero - lexema.Length, puntero - 1);
@@ -209,14 +223,14 @@ namespace LecturaDeTextos.AnalizadorLexico
                     case 6:
                         leerSiguienteCaracter();
 
-                        if ("_".Equals(caracterActual) || Char.IsLetter(caracterActual.ToCharArray()[0]) )
+                        if ("_".Equals(caracterActual) || Char.IsLetter(caracterActual.ToCharArray()[0]))
                         {
                             lexema += caracterActual;
                             estadoActual = 6;
                         }
                         else
                         {
-                            estadoActual = 7;                       
+                            estadoActual = 7;
                         }
                         break;
 
@@ -235,7 +249,8 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                             estadoActual = 9;
                         }
-                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]) && !"A".Equals(caracterActual)) {
+                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]) && !"A".Equals(caracterActual))
+                        {
                             lexema += caracterActual;
                             estadoActual = 6;
                         }
@@ -253,7 +268,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         {
                             lexema += caracterActual;
                             estadoActual = 6;
-                        }                        
+                        }
                         break;
 
                     case 10:
@@ -293,7 +308,8 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                             estadoActual = 12;
                         }
-                        else if(".".Equals(caracterActual)) {
+                        else if (".".Equals(caracterActual))
+                        {
                             lexema += caracterActual;
                             estadoActual = 13;
                         }
@@ -313,7 +329,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         }
                         else
                         {
-                            estadoActual = 15;
+                            estadoActual = 38;
                         }
                         break;
 
@@ -339,17 +355,17 @@ namespace LecturaDeTextos.AnalizadorLexico
                         TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
-                    case 16:               
+                    case 16:
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "SUMA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         break;
 
-                    case 17:        
+                    case 17:
                         componenteLexico = ComponenteLexico.Crear(lexema, "RESTA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
 
-                    case 18:                   
+                    case 18:
                         componenteLexico = ComponenteLexico.Crear(lexema, "MULTIPLICACION", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
@@ -360,19 +376,16 @@ namespace LecturaDeTextos.AnalizadorLexico
                         break;
 
                     case 20:
-                        if (Char.IsLetter(caracterActual.ToCharArray()[0]))
+                        leerSiguienteCaracter();
+                        if ("'".Equals(caracterActual))
                         {
                             lexema += caracterActual;
                             estadoActual = 23;
                         }
-                        else if ("=".Equals(caracterActual))
-                        {
-                            lexema += caracterActual;
-                            estadoActual = 24;
-                        }
                         else
                         {
-                            estadoActual = 25;
+                            lexema += caracterActual;
+                            estadoActual = 22;
                         }
                         break;
 
@@ -385,62 +398,86 @@ namespace LecturaDeTextos.AnalizadorLexico
                         break;
 
                     case 22:
-                        if ("=".Equals(caracterActual))
+                        leerSiguienteCaracter();
+                        if ("'".Equals(caracterActual))
                         {
                             lexema += caracterActual;
-                            estadoActual = 28;
+                            estadoActual = 23;
                         }
-                        else
+                        else if (Char.IsLetter(caracterActual.ToCharArray()[0]))
                         {
-                            estadoActual = 29;
+                            lexema += caracterActual;
+                            estadoActual = 22;
                         }
                         break;
 
                     case 23:
                         continuarAnalisis = false;
-                        componenteLexico = ComponenteLexico.Crear(lexema, "DIFERENTE QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                       TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "LITERAL", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 24:
                         continuarAnalisis = false;
-                        componenteLexico = ComponenteLexico.Crear(lexema, "MENOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                       TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 25:
-                        devolverPuntero();
-                        continuarAnalisis = false;
-                        componenteLexico = ComponenteLexico.Crear(lexema, "MENOR QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        leerSiguienteCaracter();
+                        if (">".Equals(caracterActual))
+                        {
+                            lexema += caracterActual;
+                            estadoActual = 31;
+                        }
+                        else if ("=".Equals(caracterActual))
+                        {
+                            lexema += caracterActual;
+                            estadoActual = 26;
+                        }
+                        else
+                        {
+                            lexema += caracterActual;
+                            estadoActual = 27;
+                        }
                         break;
 
                     case 26:
                         continuarAnalisis = false;
-                        componenteLexico = ComponenteLexico.Crear(lexema, "MAYOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MENOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 27:
                         devolverPuntero();
                         continuarAnalisis = false;
-                        componenteLexico = ComponenteLexico.Crear(lexema, "MAYOR O IGUAL QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MENOR QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 28:
-                        continuarAnalisis = false;
-                        componenteLexico = ComponenteLexico.Crear(lexema, "ASIGNACIÓN", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        leerSiguienteCaracter();
+                        if ("=".Equals(caracterActual))
+                        {
+                            lexema += caracterActual;
+                            estadoActual = 36;
+                        }
+                        else
+                        {
+                            lexema += caracterActual;
+                            estadoActual = 29;
+                        }
                         break;
 
                     case 29:
                         devolverPuntero();
-                        //componenteLexico = new ComponenteLexico(null, "ERROR!, ASIGNACIÓN NO VÁLIDA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MAYOR QUE", numeroLineaActual, puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 30:
+                        leerSiguienteCaracter();
                         if ("=".Equals(caracterActual))
                         {
                             lexema += caracterActual;
@@ -448,7 +485,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         }
                         else
                         {
-                            estadoActual = 29;
+                            estadoActual = 39;
                         }
                         break;
 
@@ -461,7 +498,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                     case 32:
                         //devolverPuntero();
                         //componenteLexico = new ComponenteLexico(null, "ERROR!, ASIGANCIÓN NO VALIDA", numeroLineaActual, puntero - lexema.Length, puntero - 1);
-                        componenteLexico = ComponenteLexico.Crear(lexema, "FIN DE LINEA", numeroLineaActual,
+                        componenteLexico = ComponenteLexico.Crear(lexema, "FIN DE ARCHIVO", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
                         continuarAnalisis = false;
                         break;
@@ -491,12 +528,12 @@ namespace LecturaDeTextos.AnalizadorLexico
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "TABLA", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
-                       TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
 
                     case 36:
                         if ("@FL@".Equals(caracterActual))
-                        { 
+                        {
                             estadoActual = 13;
                         }
                         else
@@ -508,15 +545,74 @@ namespace LecturaDeTextos.AnalizadorLexico
                         cargarNuevaLinea();
                         estadoActual = 34;
                         break;
+                    case 38:
+                        //Estado de Error
+                        continuarAnalisis = false;
+                        causa = "Se esperaba un digito y recibió " + caracterActual + ".";
+                        falla = "Decimal mal formado";
+                        solucion = "Asegurese que luego del separador decimal exista un digito para formar un decimal";
+
+                        //Reportando el error
+                        ManejadorErrores.obtenerManejadorErrores().
+                            agregarError(formarError(lexema, causa, falla, solucion));
+
+                        componenteLexico = ComponenteLexico.Crear(lexema + "0", "NUMERO DECIMAL", numeroLineaActual,
+                            puntero - lexema.Length, puntero - 1);
+
+                        componenteLexico.tipo = TipoComponenteLexico.DUMMY;
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        break;
+
+                    case 39:
+                        //Estado de Error
+                        continuarAnalisis = false;
+                        causa = "Se esperaba un igual y recibió " + caracterActual + ".";
+                        falla = "diferente que mal formado";
+                        solucion = "Asegurese que luego del ! exista un igual(=) para formar un diferente que.";
+
+                        //Reportando el error
+                        ManejadorErrores.obtenerManejadorErrores().
+                            agregarError(formarError(lexema, causa, falla, solucion));
+
+                        componenteLexico = ComponenteLexico.Crear(lexema + "=", "DIFERENTE QUE", numeroLineaActual,
+                            puntero - lexema.Length, puntero - 1);
+
+                        componenteLexico.tipo = TipoComponenteLexico.DUMMY;
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+
+                        break;
+
+                    case 40:
+                        //Estado de Stoper
+                        devolverPuntero();
+
+                        causa = "Causa: caracter no soportado por el lenguaje:  " + caracterActual + ".\n";
+                        falla = "Falla: no se reconoce el simbolo ingresado.\n";
+                        solucion = "Solucion: asegurese de utilizar solo los simbolos permitidos por el lenguaje.";
+
+                        //Reportando el error
+                        ManejadorErrores.obtenerManejadorErrores().
+                            agregarError(formarError(caracterActual, causa, falla, solucion));
+
+
+                        throw new Exception("Se ha presentado un erro lexico tipo stopper, que impide la manejador de " +
+                            "errores recuperarse, por favor verifique.\n\n" + causa + falla + solucion);
+                    case 41:
+                        continuarAnalisis = false;
+                        componenteLexico = ComponenteLexico.Crear(lexema, "DELIMITADOR", numeroLineaActual,
+                            puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
+                        break;
+
+
                 }
             }
             return componenteLexico;
         }
-
         private Error formarError(String lexema, String causa, String falla, String solucion)
         {
-            return Error.Crear(lexema, "Error", numeroLineaActual, puntero - lexema.Length, puntero - 1, causa,
-                falla, solucion, TipoError.LEXICO);
+            return Error.Crear(lexema, "Error", numeroLineaActual, puntero - lexema.Length, puntero - 1,
+                causa, falla, solucion, TipoError.LEXICO);
         }
     }
 }

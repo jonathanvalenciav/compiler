@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace LecturaDeTextos.AnalizadorSintactico
 {
-    public class AnalisisSintatico
+    public class AnalisisSintacticoSQL
     {
         private bool depurar = false;
         private AnalisisLexico analex = new AnalizadorLexico.AnalisisLexico();
@@ -25,37 +25,37 @@ namespace LecturaDeTextos.AnalizadorSintactico
 
             try
             {
-            depurar = true;
-            depurarGramatica("Iniciando analisis sintáctico");
-            cadenaCategorias = "";
-            cadenaLexemas = "";
-            
+                depurar = true;
+                depurarGramatica("Iniciando analisis sintáctico");
+                cadenaCategorias = "";
+                cadenaLexemas = "";
 
-            componente = analex.analizar();
-            expresion();
 
-            if (ManejadorErrores.obtenerManejadorErrores().hayErrores())
-            {
-                MessageBox.Show("El analisis ha terminado. el programa esta mal escrito, verifique el detalle ");
-            }
-            else
-            {
-                if("FIN DE ARCHIVO".Equals(componente.Categoria))
+                componente = analex.analizar();
+                expresion();
+
+                if (ManejadorErrores.obtenerManejadorErrores().hayErrores())
                 {
-                    MessageBox.Show("El programa esta bien escrito");
+                    MessageBox.Show("El analisis ha terminado. el programa esta mal escrito, verifique el detalle ");
                 }
                 else
                 {
-                    MessageBox.Show("aunque esta bien escrito, faltaron componentes por evaluar.");
+                    if ("FIN DE ARCHIVO".Equals(componente.Categoria))
+                    {
+                        MessageBox.Show("El programa esta bien escrito");
+                    }
+                    else
+                    {
+                        MessageBox.Show("aunque esta bien escrito, faltaron componentes por evaluar.");
+                    }
                 }
-            }
 
-            depurarGramatica("Finalizando analisis sintáctico");
+                depurarGramatica("Finalizando analisis sintáctico");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
-               
+
             }
         }
 
@@ -110,12 +110,12 @@ namespace LecturaDeTextos.AnalizadorSintactico
             if ("NUMERO ENTERO".Equals(componente.Categoria))
             {
                 obtenerComponente("NUMERO ENTERO");
-           
+
             }
             else if ("NUMERO DECIMAL".Equals(componente.Categoria))
             {
                 obtenerComponente("NUMERO DECIMAL");
-             
+
             }
             else if ("PARENTESIS ABRE".Equals(componente.Categoria))
             {
@@ -174,7 +174,7 @@ namespace LecturaDeTextos.AnalizadorSintactico
 
         private void obtenerComponente(String categoriaValida)
         {
-            if(componente.Categoria.Equals(categoriaValida))
+            if (componente.Categoria.Equals(categoriaValida))
             {
                 imprimirDerivacion();
                 componente = analex.analizar();
@@ -190,7 +190,7 @@ namespace LecturaDeTextos.AnalizadorSintactico
 
         private Error formarError(String lexema, String causa, String falla, String solucion)
         {
-            return Error.Crear(lexema, "Error", componente.numeroLinea, componente.posicionInicial, componente.posicionFinal, 
+            return Error.Crear(lexema, "Error", componente.numeroLinea, componente.posicionInicial, componente.posicionFinal,
                 causa, falla, solucion, TipoError.SINTACTICO);
         }
     }

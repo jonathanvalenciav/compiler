@@ -88,7 +88,6 @@ namespace LecturaDeTextos
         {
             // CODIGO
             AnalisisLexico analex = new AnalisisLexico();
-            AnalisisSintatico analix = new AnalisisSintatico();
             ComponenteLexico tmp = analex.analizar();
 
             while (!"@EOF@".Equals(tmp.Lexema))
