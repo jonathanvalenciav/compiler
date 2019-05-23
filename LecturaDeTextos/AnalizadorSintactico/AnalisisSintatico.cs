@@ -32,7 +32,7 @@ namespace LecturaDeTextos.AnalizadorSintactico
             
 
             componente = analex.analizar();
-            expresion();
+            gramatica();
 
             if (ManejadorErrores.obtenerManejadorErrores().hayErrores())
             {
@@ -59,102 +59,237 @@ namespace LecturaDeTextos.AnalizadorSintactico
             }
         }
 
-        //<Expresion> := <Termino><ExpresionPrima>
-        private void expresion()
+        // <Gramatica> := SELECT <campo> FROM <tabla> <wherePrima> <orderByPrima>
+
+        private void gramatica()
         {
-            depurarGramatica("Iniciando evaluacion  de regla <expresion>");
-
-            termino();
-            expresionPrima();
-
-            depurarGramatica("finalizando  evaluacion  de regla <expresion>");
-
+            depurarGramatica("Iniciando evaluación regla <gramatica>");
+            obtenerComponente("IDENTIFICADOR");
+            campo();
+            obtenerComponente("IDENTIFICADOR");
+            tabla();
+            wherePrima();
+            orderByPrima();
+            depurarGramatica("Finalizando evaluación regla <gramatica>");
         }
 
-        //<Termino> := <Factor><TerminoPrima>
-        private void termino()
+        // <wherePrima> := WHERE <condicion> | Epsilon
+
+        private void wherePrima()
         {
-            depurarGramatica("Iniciando evaluacion  de regla <termino>");
-
-            factor();
-            terminoPrima();
-            depurarGramatica("finalizando  evaluacion  de regla <termino>");
-
+            depurarGramatica("Iniciando evaluación regla <wherePrima>");
+            if ("IDENTIFICADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("IDENTIFICADOR");
+                condicion();
+            }
+            depurarGramatica("Finalizando evaluación regla <wherePrima>");
         }
 
-        //<ExpresionPrima> := SUMA<Expresion>|RESTA<Expresion>|Epsilon
-        private void expresionPrima()
+        // <orderByPrima> := ORDER BY <ordenadores> | Epsilon
+
+        private void orderByPrima()
         {
-            depurarGramatica("Iniciando evaluacion  de regla <expresionPrima>");
-
-            if ("SUMA".Equals(componente.Categoria))
+            depurarGramatica("Iniciando evaluación regla <orderByPrima>");
+            if ("IDENTIFICADOR".Equals(componente.Categoria))
             {
-                obtenerComponente("SUMA");
-                expresion();
+                obtenerComponente("IDENTIFICADOR");
+                obtenerComponente("IDENTIFICADOR");
+                ordenadores();
             }
-            else if ("RESTA".Equals(componente.Categoria))
-            {
-                obtenerComponente("RESTA");
-                expresion();
-            }
-
-            depurarGramatica("finalizando  evaluacion  de regla <expresionPrima>");
-
+            depurarGramatica("Finalizando evaluación regla <orderByPrima>");
         }
 
-        //<Factor> := NUMERO ENTERO|NUMERO DECIMAL|PARENTESIS ABRE<Expresion>PARENTESIS CIERRA
-        private void factor()
+        // <campo> := CAMPO <campoPrima>
+
+        private void campo()
         {
-            depurarGramatica("Iniciando evaluacion  de regla <factor>");
+            depurarGramatica("Iniciando evaluación regla <campo>");
+            obtenerComponente("IDENTIFICADOR");
+            campoPrima();
+            depurarGramatica("Finalizando evaluación regla <campo>");
+        }
 
-            if ("NUMERO ENTERO".Equals(componente.Categoria))
-            {
-                obtenerComponente("NUMERO ENTERO");
-           
-            }
-            else if ("NUMERO DECIMAL".Equals(componente.Categoria))
-            {
-                obtenerComponente("NUMERO DECIMAL");
-             
-            }
-            else if ("PARENTESIS ABRE".Equals(componente.Categoria))
-            {
-                obtenerComponente("PARENTESIS ABRE");
-                expresion();
-                obtenerComponente("PARENTESIS CIERRA");
+        // <campoPrima> := DELIMITADOR <campo> | Epsilon
 
+        private void campoPrima()
+        {
+            depurarGramatica("Iniciando evaluación regla <campoPrima>");
+            if ("DELIMITADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("DELIMITADOR");
+                campo();
+            }
+            depurarGramatica("Finalizando evaluación regla <campoPrima>");
+        }
+
+        // <tabla> := TABLA <tablaPrima>
+
+        private void tabla()
+        {
+            depurarGramatica("Iniciando evaluación regla <tabla>");
+            obtenerComponente("TABLA");
+            tablaPrima();
+            depurarGramatica("Finalizando evaluación regla <tabla>");
+        }
+
+        // <tablaPrima> := DELIMITADOR <tabla> | Epsilon
+
+        private void tablaPrima()
+        {
+            depurarGramatica("Iniciando evaluación regla <tablaPrima>");
+            if ("DELIMITADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("DELIMITADOR");
+                tabla();
+            }
+            depurarGramatica("Finalizando evaluación regla <tablaPrima>");
+        }
+
+        // <condicion> := <operando> <operador> <operando> <condicionPrima>
+
+        private void condicion()
+        {
+            depurarGramatica("Iniciando evaluación regla <condicion>");
+            operando();
+            operador();
+            operando();
+            condicionPrima();
+            depurarGramatica("Finalizando evaluación regla <condicion>");
+        }
+
+        // <condicionPrima> := AND<condicion> | OR <condicion> | Epsilon
+
+        private void condicionPrima()
+        {
+            depurarGramatica("Iniciando evaluación regla <condicionPrima>");
+            if ("IDENTIFICADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("IDENTIFICADOR");
+                condicion();
+            }
+            else if ("IDENTIFICADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("IDENTIFICADOR");
+                condicion();
+            }
+            depurarGramatica("Finalizando evaluación regla <condicionPrima>");
+        }
+
+        // <operando> := <campo> | LITERAL | NUMERO ENTERO | NUMERO DECIMAL
+
+        private void operando()
+        {
+            depurarGramatica("Iniciando evaluación regla <operando>");
+            if ("LITERAL".Equals(componente.Categoria))
+            {
+                obtenerComponente("LITERAL");
+            }
+            else if ("NÚMERO ENTERO".Equals(componente.Categoria))
+            {
+                obtenerComponente("NÚMERO ENTERO");
+            }
+            else if ("NÚMERO DECIMAL".Equals(componente.Categoria))
+            {
+                obtenerComponente("NÚMERO DECIMAL");
             }
             else
             {
-                causa = "Se esperaba NUMERO ENTERO o NUMERO DECIMAL O PARENTESIS ABRE y recibi " + componente.Categoria;
-                falla = "Problemas en la validacion de la gramatica que no la hace valida";
-                solucion = "Asegure que se tenga NUMERO ENTERO o NUMERO DECIMAL O PARENTESIS ABRE  en el lugar donde se ha presentado el error";
-                ManejadorErrores.obtenerManejadorErrores().agregarError(formarError(componente.Lexema, causa, falla, solucion));
-                throw new Exception("No es posible  continuar con el analisis, verifique y solucione los errores");
+                campo();
             }
-
-            depurarGramatica("finalizando  evaluacion  de regla <factor>");
-
+            depurarGramatica("Finalizando evaluación regla <operando>");
         }
 
-        //<TerminoPrima> := MULTIPLICACION<Termino>|DIVISION<Termino>|Epsilon
-        private void terminoPrima()
+        // <operador> := MAYOR QUE | MENOR QUE | IGUAL QUE | MAYOR O IGUAL QUE | MENOR O IGUAL QUE | DIFERENTE QUE
+
+        private void operador()
         {
-            depurarGramatica("Iniciando evaluacion  de regla <TerminoPrima>");
-
-            if ("MULTIPLICACION".Equals(componente.Categoria))
+            depurarGramatica("Iniciando evaluación regla <operador>");
+            if ("MAYOR QUE".Equals(componente.Categoria))
             {
-                obtenerComponente("MULTIPLICACION");
-                termino();
+                obtenerComponente("MAYOR QUE");
             }
-            else if ("DIVISION".Equals(componente.Categoria))
+            else if ("MENOR QUE".Equals(componente.Categoria))
             {
-                obtenerComponente("DIVISION");
-                termino();
+                obtenerComponente("MENOR QUE");
             }
+            else if ("IGUAL QUE".Equals(componente.Categoria))
+            {
+                obtenerComponente("IGUAL QUE");
+            }
+            else if ("MAYOR O IGUAL QUE".Equals(componente.Categoria))
+            {
+                obtenerComponente("MAYOR O IGUAL QUE");
+            }
+            else if ("MENOR O IGUAL QUE".Equals(componente.Categoria))
+            {
+                obtenerComponente("MENOR O IGUAL QUE");
+            }
+            else if ("DIFERENTE QUE".Equals(componente.Categoria))
+            {
+                obtenerComponente("DIFERENTE QUE");
+            }
+            depurarGramatica("Finalizando evaluación regla <operador>");
+        }
 
-            depurarGramatica("finalizando  evaluacion  de regla <TerminoPrima>");
+        // <ordenadores> := <columna> ASC | <columna> DESC
 
+        private void ordenadores()
+        {
+            depurarGramatica("Iniciando evaluación regla <ordenadores>");
+            columna();
+            if ("IDENTIFICADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("IDENTIFICADOR");
+            }
+            else if ("IDENTIFICADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("IDENTIFICADOR");
+            }
+            depurarGramatica("Finalizando evaluación regla <ordenadores>");
+        }
+
+        // <columna> := <campo> | <indice>
+
+        private void columna()
+        {
+            depurarGramatica("Iniciando evaluación regla <columna>");
+            columna();
+            if ("CAMPO".Equals(componente.Categoria))
+            {
+                campo();
+            }
+            else if ("NÚMERO ENTERO".Equals(componente.Categoria))
+            {
+                indice();
+            }
+            depurarGramatica("Finalizando evaluación regla <columna>");
+        }
+
+        // <indice> := NUMERO ENTERO <indicePrima>
+
+        private void indice()
+        {
+            depurarGramatica("Iniciando evaluación regla <indice>");
+            if ("NÚMERO ENTERO".Equals(componente.Categoria))
+            {
+                obtenerComponente("NÚMERO ENTERO");
+                indicePrima();
+            }
+            depurarGramatica("Finalizando evaluación regla <indice>");
+        }
+
+        // <indicePrima> := DELIMITADOR <indice>
+
+        private void indicePrima()
+        {
+            depurarGramatica("Iniciando evaluación regla <indicePrima>");
+            if ("DELIMITADOR".Equals(componente.Categoria))
+            {
+                obtenerComponente("DELIMITADOR");
+                indice();
+            }
+            depurarGramatica("Finalizando evaluación regla <indicePrima>");
         }
 
         private void depurarGramatica(String mensage)

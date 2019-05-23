@@ -566,6 +566,7 @@ namespace LecturaDeTextos.AnalizadorLexico
 
                     case 39:
                         //Estado de Error
+                        devolverPuntero();
                         continuarAnalisis = false;
                         causa = "Se esperaba un igual y recibió " + caracterActual + ".";
                         falla = "Diferente que mal formado";
