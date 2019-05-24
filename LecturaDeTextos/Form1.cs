@@ -115,7 +115,7 @@ namespace LecturaDeTextos
         private void button2_Click(object sender, EventArgs e)
         {
             // CODIGO
-                AnalisisSintatico analix = new AnalisisSintatico();
+                AnalisisSintacticoSQL analix = new AnalisisSintacticoSQL();
                 analix.analizar();
 
         }

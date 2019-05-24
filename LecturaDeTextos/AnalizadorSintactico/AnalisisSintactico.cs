@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace LecturaDeTextos.AnalizadorSintactico
 {
-    public class AnalisisSintatico
+    public class AnalisisSintactico
     {
         private bool depurar = false;
         private AnalisisLexico analex = new AnalizadorLexico.AnalisisLexico();

@@ -524,7 +524,6 @@ namespace LecturaDeTextos.AnalizadorLexico
                             lexema += caracterActual;
                         }
                         break;
-
                     case 35:
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "TABLA", numeroLineaActual,
@@ -533,19 +532,12 @@ namespace LecturaDeTextos.AnalizadorLexico
                         break;
 
                     case 36:
-                        if ("@FL@".Equals(caracterActual))
-                        {
-                            estadoActual = 13;
-                        }
-                        else
-                        {
-                            estadoActual = 36;
-                        }
+                        continuarAnalisis = false;
+                        componenteLexico = ComponenteLexico.Crear(lexema, "MAYOR O IGUAL QUE", numeroLineaActual,
+                            puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
                         break;
-                    case 37:
-                        cargarNuevaLinea();
-                        estadoActual = 34;
-                        break;
+
                     case 38:
                         //Estado de Error
                         continuarAnalisis = false;
