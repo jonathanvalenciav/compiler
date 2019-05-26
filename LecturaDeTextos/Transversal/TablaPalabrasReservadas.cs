@@ -15,17 +15,17 @@ namespace LecturaDeTextos.Transversal
         public TablaPalabrasReservadas()
         {
             //Asi con todas 
-            tablaInicial.Add("SELECT",ComponenteLexico.Crear("SELECT","select"));
-            tablaInicial.Add("FROM",ComponenteLexico.Crear("FROM","from"));
-            tablaInicial.Add("WHERE",ComponenteLexico.Crear("WHERE","where"));
-            tablaInicial.Add("ORDER",ComponenteLexico.Crear("ORDER","order"));
-            tablaInicial.Add("BY",ComponenteLexico.Crear("BY","by"));
-            tablaInicial.Add("INNER",ComponenteLexico.Crear("INNER","Inner"));
-            tablaInicial.Add("AND",ComponenteLexico.Crear("AND","And"));
-            tablaInicial.Add("OR",ComponenteLexico.Crear("OR","Or"));
-            tablaInicial.Add("JOIN",ComponenteLexico.Crear("JOIN", "Join"));
-            tablaInicial.Add("ASC",ComponenteLexico.Crear("ASC", "Asc"));
-            tablaInicial.Add("DESC",ComponenteLexico.Crear("DESC", "Desc"));
+            tablaInicial.Add("SELECT",ComponenteLexico.Crear("SELECT", "SELECT"));
+            tablaInicial.Add("FROM",ComponenteLexico.Crear("FROM", "FROM"));
+            tablaInicial.Add("WHERE",ComponenteLexico.Crear("WHERE", "WHERE"));
+            tablaInicial.Add("ORDER",ComponenteLexico.Crear("ORDER", "ORDER"));
+            tablaInicial.Add("BY",ComponenteLexico.Crear("BY", "BY"));
+            tablaInicial.Add("INNER",ComponenteLexico.Crear("INNER", "INNER"));
+            tablaInicial.Add("AND",ComponenteLexico.Crear("AND", "AND"));
+            tablaInicial.Add("OR",ComponenteLexico.Crear("OR", "OR"));
+            tablaInicial.Add("JOIN",ComponenteLexico.Crear("JOIN", "JOIN"));
+            tablaInicial.Add("ASC",ComponenteLexico.Crear("ASC", "ASC"));
+            tablaInicial.Add("DESC",ComponenteLexico.Crear("DESC", "DESC"));
         }
         public static TablaPalabrasReservadas obtenerTablaPalabrasReservadas()
         {

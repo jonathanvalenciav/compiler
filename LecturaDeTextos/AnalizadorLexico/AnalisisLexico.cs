@@ -239,6 +239,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         continuarAnalisis = false;
                         componenteLexico = ComponenteLexico.Crear(lexema, "IDENTIFICADOR", numeroLineaActual,
                             puntero - lexema.Length, puntero - 1);
+                        TablaMaestro.obtenerTablaMaestro().agregarElemento(componenteLexico);
 
                         break;
 
