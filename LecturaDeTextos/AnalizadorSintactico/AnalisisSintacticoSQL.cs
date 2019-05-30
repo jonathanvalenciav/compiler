@@ -12,6 +12,7 @@ namespace LecturaDeTextos.AnalizadorSintactico
     public class AnalisisSintacticoSQL
     {
         private bool depurar = false;
+        private bool depurarOperacion = false;
         private AnalisisLexico analex = new AnalizadorLexico.AnalisisLexico();
         private ComponenteLexico componente;
         private String cadenaCategorias;
@@ -19,13 +20,15 @@ namespace LecturaDeTextos.AnalizadorSintactico
         private String causa;
         private String falla;
         private String solucion;
+        private Stack<double> pila = new Stack<double>();
 
         public void analizar()
         {
 
             try
             {
-                depurar = true;
+                depurar = false;
+                depurarOperacion = true;
                 depurarGramatica("Iniciando analisis sintáctico");
                 cadenaCategorias = "";
                 cadenaLexemas = "";
@@ -42,7 +45,14 @@ namespace LecturaDeTextos.AnalizadorSintactico
                 {
                     if ("FIN DE ARCHIVO".Equals(componente.Categoria))
                     {
-                        MessageBox.Show("El programa esta bien escrito");
+                        if (pila.Count == 1)
+                        {
+                            MessageBox.Show("El programa esta bien escrito y el resultado de la operación es: " + pila.Pop());
+                        }
+                        else
+                        {
+                            MessageBox.Show("aunque esta bien escrito, faltaron componentes por evaluar.");
+                        }
                     }
                     else
                     {
@@ -91,11 +101,29 @@ namespace LecturaDeTextos.AnalizadorSintactico
             {
                 obtenerComponente("SUMA");
                 expresion();
+
+                if (!ManejadorErrores.obtenerManejadorErrores().hayErrores())
+                {
+                    Double derecho = pila.Pop();
+                    Double izquierdo = pila.Pop();
+                    Double resultado = izquierdo + derecho;
+                    pila.Push(resultado);
+                    depurarOperaciones(izquierdo + " + " + derecho + " = " + resultado);
+                }
             }
             else if ("RESTA".Equals(componente.Categoria))
             {
                 obtenerComponente("RESTA");
                 expresion();
+
+                if (!ManejadorErrores.obtenerManejadorErrores().hayErrores())
+                {
+                    Double derecho = pila.Pop();
+                    Double izquierdo = pila.Pop();
+                    Double resultado = izquierdo - derecho;
+                    pila.Push(resultado);
+                    depurarOperaciones(izquierdo + " - " + derecho + " = " + resultado);
+                }
             }
 
             depurarGramatica("finalizando  evaluacion  de regla <expresionPrima>");
@@ -109,11 +137,13 @@ namespace LecturaDeTextos.AnalizadorSintactico
 
             if ("NUMERO ENTERO".Equals(componente.Categoria))
             {
+                pila.Push(Convert.ToDouble(componente.Lexema));
                 obtenerComponente("NUMERO ENTERO");
 
             }
             else if ("NUMERO DECIMAL".Equals(componente.Categoria))
             {
+                pila.Push(Convert.ToDouble(componente.Lexema));
                 obtenerComponente("NUMERO DECIMAL");
 
             }
@@ -146,20 +176,53 @@ namespace LecturaDeTextos.AnalizadorSintactico
             {
                 obtenerComponente("MULTIPLICACION");
                 termino();
+
+                if (!ManejadorErrores.obtenerManejadorErrores().hayErrores()) {
+                    Double derecho = pila.Pop();
+                    Double izquierdo = pila.Pop();
+                    Double resultado = izquierdo * derecho;
+                    pila.Push(resultado);
+                    depurarOperaciones(izquierdo + " * " + derecho + " = " + resultado);
+                }
             }
             else if ("DIVISION".Equals(componente.Categoria))
             {
                 obtenerComponente("DIVISION");
                 termino();
+
+                if (!ManejadorErrores.obtenerManejadorErrores().hayErrores())
+                {
+                    Double derecho = pila.Pop();
+                    Double izquierdo = pila.Pop();
+                    if (derecho == 0)
+                    {
+                        causa = "División por cero";
+                        falla = "Problemas en las operaciones diviendo por cero";
+                        solucion = "Asegure que que el divisor no sea cero.";
+                        ManejadorErrores.obtenerManejadorErrores().agregarError(formarErrorSemantico(componente.Lexema, causa, falla, solucion));
+                    }
+                    else
+                    {
+                        Double resultado = izquierdo / derecho;
+                        pila.Push(resultado);
+                        depurarOperaciones(izquierdo + " / " + derecho + " = " + resultado);
+                    }                   
+                }
             }
-
             depurarGramatica("finalizando  evaluacion  de regla <TerminoPrima>");
-
         }
 
         private void depurarGramatica(String mensage)
         {
             if (depurar)
+            {
+                MessageBox.Show(mensage);
+            }
+        }
+
+        private void depurarOperaciones(String mensage)
+        {
+            if (depurarOperacion)
             {
                 MessageBox.Show(mensage);
             }
@@ -192,6 +255,12 @@ namespace LecturaDeTextos.AnalizadorSintactico
         {
             return Error.Crear(lexema, "Error", componente.numeroLinea, componente.posicionInicial, componente.posicionFinal,
                 causa, falla, solucion, TipoError.SINTACTICO);
+        }
+
+        private Error formarErrorSemantico(String lexema, String causa, String falla, String solucion)
+        {
+            return Error.Crear(lexema, "Error", componente.numeroLinea, componente.posicionInicial, componente.posicionFinal,
+                causa, falla, solucion, TipoError.SEMANTICO);
         }
     }
 }
