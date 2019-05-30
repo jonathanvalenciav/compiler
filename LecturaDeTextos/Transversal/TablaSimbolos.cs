@@ -51,7 +51,5 @@ namespace LecturaDeTextos.Transversal
         {
             return Instancia = new TablaSimbolos();
         }
-
-
     }
 }

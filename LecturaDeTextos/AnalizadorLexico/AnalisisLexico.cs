@@ -579,7 +579,7 @@ namespace LecturaDeTextos.AnalizadorLexico
                         break;
 
                     case 40:
-                        //Estado de Stoper
+                        //Estado de Stopper
                         devolverPuntero();
 
                         causa = "Causa: caracter no soportado por el lenguaje:  " + caracterActual + ".\n";
