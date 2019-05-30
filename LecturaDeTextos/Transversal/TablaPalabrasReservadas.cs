@@ -64,8 +64,6 @@ namespace LecturaDeTextos.Transversal
                 componenteLexico.tipo = TipoComponenteLexico.PALABRA_RESERVADA;
                 componenteLexico.Categoria = tablaInicial[componenteLexico.Lexema.ToUpper()].Categoria;
             }
-        }
-
-  
+        }  
     }
 }

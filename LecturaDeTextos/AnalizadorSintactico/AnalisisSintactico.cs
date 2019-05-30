@@ -5,358 +5,335 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using System.Windows.Forms;
 
 namespace LecturaDeTextos.AnalizadorSintactico
 {
-    public class AnalisisSintactico
+    class AnalisisSintactico
     {
         private bool depurar = false;
-        private AnalisisLexico analex = new AnalizadorLexico.AnalisisLexico();
+        private AnalisisLexico analisisLexico = new AnalisisLexico();
         private ComponenteLexico componente;
-        private String cadenaCategorias;
-        private String cadenaLexemas;
-        private String causa;
-        private String falla;
-        private String solucion;
+        private String cadenaCategorias = "";
+        private String cadenaLemexas = "";
 
         public void analizar()
         {
-
             try
             {
-            depurar = true;
-            depurarGramatica("Iniciando analisis sintáctico");
-            cadenaCategorias = "";
-            cadenaLexemas = "";
+                depurar = false;
+                depurarGramatica("Iniciando analisis sintactico");
+                cadenaCategorias = "";
+                cadenaLemexas = "";
 
+                componente = analisisLexico.analizar();
+                Gramatica();
 
-            componente = analex.analizar();
-            select();
-
-            if (ManejadorErrores.obtenerManejadorErrores().hayErrores())
-            {
-                MessageBox.Show("El analisis ha terminado. el programa esta mal escrito, verifique el detalle ");
-            }
-            else
-            {
-                if("FIN DE ARCHIVO".Equals(componente.Categoria))
+                if (Transversal.ManejadorErrores.obtenerManejadorErrores().hayErrores())
                 {
-                    MessageBox.Show("El programa esta bien escrito");
+                    MessageBox.Show("El analisis ha terminado. El programa está mal escrito. Verifique el detalle");
                 }
                 else
                 {
-                    MessageBox.Show("aunque esta bien escrito, faltaron componentes por evaluar.");
+                    if ("FIN DE ARCHIVO".Equals(componente.Categoria))
+                    {
+                        MessageBox.Show("El programa está bien escrito.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Aunque está bien escrita, faltaron componentes por evaluar.");
+                    }
                 }
             }
-
-            depurarGramatica("Finalizando analisis sintáctico");
-            }
-            catch (Exception e)
+            catch (Exception excepcion)
             {
-                MessageBox.Show(e.Message);
-               
+                MessageBox.Show(excepcion.Message);
             }
+
+            depurarGramatica("Finalizando analisis sintactico");
         }
 
-        // <Select> := SELECT <campo> FROM <tabla> <wherePrima> <orderByPrima>
-
-        private void select()
+        // <Gramatica> := SELECT <Campos> FROM <Tablas> | SELECT <Campos> FROM <Tablas> <Opcionales>
+        private void Gramatica()
         {
-            depurarGramatica("Iniciando evaluación regla <select>");
-            pedirComponente("SELECT");
-            campo();
-            pedirComponente("FROM");
-            tabla();
-            wherePrima();
-            orderByPrima();
-            depurarGramatica("Finalizando evaluación regla <select>");
+            depurarGramatica("Iniciando evaluación regla <Gramatica>");
+
+            getComponente("SELECT");
+            Campos();
+            getComponente("FROM");
+            Tablas();
+
+            if ("WHERE".Equals(componente.Categoria) || "ORDER".Equals(componente.Categoria))
+            {
+                Opcionales();
+            }
+
+            depurarGramatica("Finalizando evaluación regla <Gramatica>");
         }
 
-        // <wherePrima> := WHERE <condicion> | Epsilon
-
-        private void wherePrima()
+        // <Opcionales> := WHERE <Condiciones> | ORDER BY <Ordenadores> | WHERE <Condiciones> ORDER BY <Ordenadores>
+        private void Opcionales()
         {
-            depurarGramatica("Iniciando evaluación regla <wherePrima>");
+            depurarGramatica("Iniciando evaluación regla <Opcionales>");
+
             if ("WHERE".Equals(componente.Categoria))
             {
-                pedirComponente("WHERE");
-                condicion();
+                getComponente("WHERE");
+                Condiciones();
+                if ("ORDER".Equals(componente.Categoria))
+                {
+                    getComponente("ORDER");
+                    getComponente("BY");
+                    Ordenadores();
+                }
             }
-            depurarGramatica("Finalizando evaluación regla <wherePrima>");
-        }
-
-        // <orderByPrima> := ORDER BY <ordenadores> | Epsilon
-
-        private void orderByPrima()
-        {
-            depurarGramatica("Iniciando evaluación regla <orderByPrima>");
-            if ("ORDER".Equals(componente.Categoria))
+            else if ("ORDER".Equals(componente.Categoria))
             {
-                pedirComponente("ORDER");
-                pedirComponente("BY");
-                ordenadores();
+                getComponente("ORDER");
+                getComponente("BY");
+                Ordenadores();
             }
-            depurarGramatica("Finalizando evaluación regla <orderByPrima>");
+
+            depurarGramatica("Finalizando evaluación regla <Opcionales>");
         }
 
-        // <campo> := CAMPO <campoPrima>
-
-        private void campo()
+        // <Campos> := CAMPO | CAMPO SEPARADOR <Campos>
+        private void Campos()
         {
-            depurarGramatica("Iniciando evaluación regla <campo>");
-            pedirComponente("CAMPO");
-            campoPrima();
-            depurarGramatica("Finalizando evaluación regla <campo>");
-        }
+            depurarGramatica("Iniciando evaluación regla <Campos>");
 
-        // <campoPrima> := COMA <campo> | Epsilon
-
-        private void campoPrima()
-        {
-            depurarGramatica("Iniciando evaluación regla <campoPrima>");
+            getComponente("CAMPO");
             if ("DELIMITADOR".Equals(componente.Categoria))
             {
-                pedirComponente("DELIMITADOR");
-                campo();
+                getComponente("DELIMITADOR");
+                Campos();
             }
-            depurarGramatica("Finalizando evaluación regla <campoPrima>");
+
+            depurarGramatica("Finalizando evaluación regla <Campos>");
         }
 
-        // <tabla> := TABLA <tablaPrima>
-
-        private void tabla()
+        // <Tablas> := TABLA | TABLA SEPARADOR <Tablas>
+        private void Tablas()
         {
-            depurarGramatica("Iniciando evaluación regla <tabla>");
-            pedirComponente("TABLA");
-            tablaPrima();
-            depurarGramatica("Finalizando evaluación regla <tabla>");
-        }
+            depurarGramatica("Iniciando evaluación regla <Tablas>");
 
-        // <tablaPrima> := COMA <tabla> | Epsilon
-
-        private void tablaPrima()
-        {
-            depurarGramatica("Iniciando evaluación regla <tablaPrima>");
+            getComponente("TABLA");
             if ("DELIMITADOR".Equals(componente.Categoria))
             {
-                pedirComponente("DELIMITADOR");
-                tabla();
+                getComponente("DELIMITADOR");
+                Tablas();
             }
-            depurarGramatica("Finalizando evaluación regla <tablaPrima>");
+
+            depurarGramatica("Finalizando evaluación regla <Tablas>");
         }
 
-        // <condicion> := <operando> <operador> <operando> <condicionPrima>
-
-        private void condicion()
+        // <Condiciones> := <Operando> <Operador> <Operando> | <Operando> <Operador> <Operando> <Conector> <Condiciones>
+        private void Condiciones()
         {
-            depurarGramatica("Iniciando evaluación regla <condicion>");
-            operando();
-            operador();
-            operando();
-            condicionPrima();
-            depurarGramatica("Finalizando evaluación regla <condicion>");
+            depurarGramatica("Iniciando evaluación regla <Condiciones>");
+
+            Operando();
+            Operador();
+            Operando();
+
+            if ("AND".Equals(componente.Categoria) || "OR".Equals(componente.Categoria))
+            {
+                Conector();
+                Condiciones();
+            }
+
+            depurarGramatica("Finalizando evaluación regla <Condiciones>");
         }
 
-        // <condicionPrima> := CONECTOR Y<condicion> | CONECTOR O <condicion> | Epsilon
-
-        private void condicionPrima()
+        // <Operando> := CAMPO | LITERAL | <Numero>
+        private void Operando()
         {
-            depurarGramatica("Iniciando evaluación regla <condicionPrima>");
-            if ("AND".Equals(componente.Categoria))
+            depurarGramatica("Iniciando evaluación regla <Operando>");
+            if ("CAMPO".Equals(componente.Categoria))
             {
-                pedirComponente("AND");
-                condicion();
+                getComponente("CAMPO");
             }
-            else if ("OR".Equals(componente.Categoria))
+            else if ("LITERAL".Equals(componente.Categoria))
             {
-                pedirComponente("OR");
-                condicion();
+                getComponente("LITERAL");
             }
-            depurarGramatica("Finalizando evaluación regla <condicionPrima>");
+            else
+            {
+                Numero();
+            }
+            depurarGramatica("Finalizando evaluación regla <Operando>");
         }
 
-        // <operando> := <campo> | LITERAL | NUMERO ENTERO | NUMERO DECIMAL
-
-        private void operando()
+        // <Numero> := NUMERO ENTERO | NUMERO DECIMAL
+        private void Numero()
         {
-            depurarGramatica("Iniciando evaluación regla <operando>");
-
-
-            if ("LITERAL".Equals(componente.Categoria))
+            depurarGramatica("Iniciando evaluación regla <Numero>");
+            if ("NUMERO ENTERO".Equals(componente.Categoria))
             {
-                pedirComponente("LITERAL");
-            }
-            else if ("NUMERO ENTERO".Equals(componente.Categoria))
-            {
-                pedirComponente("NUMERO ENTERO");
+                getComponente("NUMERO ENTERO");
             }
             else if ("NUMERO DECIMAL".Equals(componente.Categoria))
             {
-                pedirComponente("NUMERO DECIMAL");
+                getComponente("NUMERO DECIMAL");
             }
-            else if ("CAMPO".Equals(componente.Categoria))
-            {
-                campo();
-            }
-            else
-            {
-                // Gestionar Error
-                String causa = "Se esperaba un CAMPO, LITERAL o NUMERO y recibi " + componente.Categoria;
-                String falla = "Problemas en la validación de la gramatica que no la hace valida.";
-                String solucion = "Asegure que se tenga un CAMPO, LITERAL o NUMERO en el lugar donde se ha presentado el error";
-                ManejadorErrores.obtenerManejadorErrores().agregarError(formarError(componente.Lexema, causa, falla, solucion));
-                throw new Exception("No es posible continuar con el análisis sintáctico. Verifique y solucione los errores presentados.");
-            }
-            depurarGramatica("Finalizando evaluación regla <operando>");
+
+            depurarGramatica("Finalizando evaluación regla <Numero>");
         }
 
-        // <operador> := MAYOR QUE | MENOR QUE | IGUAL QUE | MAYOR O IGUAL QUE | MENOR O IGUAL QUE | DIFERENTE QUE
-
-        private void operador()
+        // <Operador> := MAYOR QUE | MENOR QUE | IGUAL QUE | MAYOR O IGUAL QUE | MENOR O IGUAL QUE | DIFERENTE QUE
+        private void Operador()
         {
-            depurarGramatica("Iniciando evaluación regla <operador>");
+            depurarGramatica("Iniciando evaluación regla <Operador>");
+
             if ("MAYOR QUE".Equals(componente.Categoria))
             {
-                pedirComponente("MAYOR QUE");
+                getComponente("MAYOR QUE");
             }
             else if ("MENOR QUE".Equals(componente.Categoria))
             {
-                pedirComponente("MENOR QUE");
+                getComponente("MENOR QUE");
             }
             else if ("IGUAL QUE".Equals(componente.Categoria))
             {
-                pedirComponente("IGUAL QUE");
+                getComponente("IGUAL QUE");
             }
             else if ("MAYOR O IGUAL QUE".Equals(componente.Categoria))
             {
-                pedirComponente("MAYOR O IGUAL QUE");
+                getComponente("MAYOR O IGUAL QUE");
             }
             else if ("MENOR O IGUAL QUE".Equals(componente.Categoria))
             {
-                pedirComponente("MENOR O IGUAL QUE");
+                getComponente("MENOR O IGUAL QUE");
             }
             else if ("DIFERENTE QUE".Equals(componente.Categoria))
             {
-                pedirComponente("DIFERENTE QUE");
+                getComponente("DIFERENTE QUE");
             }
-            else
-            {
-                // Gestionar Error
-                String causa = "Se esperaba un operador y recibi " + componente.Categoria;
-                String falla = "Problemas en la validación de la gramatica que no la hace valida.";
-                String solucion = "Asegure que se tenga un operador en el lugar donde se ha presentado el error";
-                ManejadorErrores.obtenerManejadorErrores().agregarError(formarError(componente.Lexema, causa, falla, solucion));
-                throw new Exception("No es posible continuar con el análisis sintáctico. Verifique y solucione los errores presentados.");
-            }
-            depurarGramatica("Finalizando evaluación regla <operador>");
+
+            depurarGramatica("Finalizando evaluación regla <Operador>");
         }
 
-        // <ordenadores> := <columna> ASCENDENTE | <columna> DESCENDENTE
-
-        private void ordenadores()
+        // <Conector> := CONECTOR Y | CONECTOR O
+        private void Conector()
         {
-            depurarGramatica("Iniciando evaluación regla <ordenadores>");
-            columna();
-            if ("ASC".Equals(componente.Categoria))
+            depurarGramatica("Iniciando evaluación regla <Conector>");
+
+            if ("AND".Equals(componente.Categoria))
             {
-                pedirComponente("ASC");
+                getComponente("AND");
             }
-            else if ("DESC".Equals(componente.Categoria))
+            else if ("OR".Equals(componente.Categoria))
             {
-                pedirComponente("DESC");
+                getComponente("OR");
             }
 
-            depurarGramatica("Finalizando evaluación regla <ordenadores>");
+            depurarGramatica("Finalizando evaluación regla <Conector>");
         }
 
-        // <columna> := <campo> | <indice>
-
-        private void columna()
+        // <Ordenadores> := <Campos> | <Campos> <Criterio> | <Indices> | <Indices> <Criterio>
+        private void Ordenadores()
         {
-            depurarGramatica("Iniciando evaluación regla <columna>");
+            depurarGramatica("Iniciando evaluación regla <Ordenadores>");
+
             if ("CAMPO".Equals(componente.Categoria))
             {
-                campo();
+                getComponente("CAMPO");
+                if ("ASC".Equals(componente.Categoria) || "DESC".Equals(componente.Categoria))
+                {
+                    Criterio();
+                }
             }
             else if ("NUMERO ENTERO".Equals(componente.Categoria))
             {
-                indice();
+                Indices();
+                if ("ASC".Equals(componente.Categoria) || "DESC".Equals(componente.Categoria))
+                {
+                    Criterio();
+                }
             }
-            else
-            {
-                // Gestionar Error
-                String causa = "Se esperaba un INDICE o COLUMNA y recibi " + componente.Categoria;
-                String falla = "Problemas en la validación de la gramatica que no la hace valida.";
-                String solucion = "Asegure que se tenga un INDICE o COLUMNA en el lugar donde se ha presentado el error";
-                ManejadorErrores.obtenerManejadorErrores().agregarError(formarError(componente.Lexema, causa, falla, solucion));
-                throw new Exception("No es posible continuar con el análisis sintáctico. Verifique y solucione los errores presentados.");
-            }
-            depurarGramatica("Finalizando evaluación regla <columna>");
+
+            depurarGramatica("Finalizando evaluación regla <Ordenadores>");
         }
 
-        // <indice> := NUMERO ENTERO <indicePrima>
-
-        private void indice()
+        // <Indices> := NUMERO ENTERO | NUMERO ENTERO SEPARADOR <Indices>
+        private void Indices()
         {
-            depurarGramatica("Iniciando evaluación regla <indice>");
-            if ("NUMERO ENTERO".Equals(componente.Categoria))
-            {
-                pedirComponente("NUMERO ENTERO");
-                indicePrima();
-            }
-            depurarGramatica("Finalizando evaluación regla <indice>");
-        }
+            depurarGramatica("Iniciando evaluación regla <Indices>");
 
-        // <indicePrima> := COMA <indice> | Epsilon
+            getComponente("NUMERO ENTERO");
 
-        private void indicePrima()
-        {
-            depurarGramatica("Iniciando evaluación regla <indicePrima>");
             if ("DELIMITADOR".Equals(componente.Categoria))
             {
-                pedirComponente("DELIMITADOR");
-                indice();
+                getComponente("DELIMITADOR");
+                Indices();
             }
-            depurarGramatica("Finalizando evaluación regla <indicePrima>");
+
+            depurarGramatica("Finalizando evaluación regla <Indices>");
         }
 
+        // <Criterio> := ASCENDENTE | DESCENDENTE | ASCENDENTE SEPARADOR <Ordenadores> | DESCENDENTE SEPARADOR <Ordenadores>
+        private void Criterio()
+        {
+            depurarGramatica("Iniciando evaluación regla <Criterio>");
 
-        private void depurarGramatica(String mensage)
+            if ("ASC".Equals(componente.Categoria))
+            {
+                getComponente("ASC");
+                if ("DELIMITADOR".Equals(componente.Categoria))
+                {
+                    getComponente("DELIMITADOR");
+                    Ordenadores();
+                }
+            }
+            else if ("DESC".Equals(componente.Categoria))
+            {
+                getComponente("DESC");
+                if ("DELIMITADOR".Equals(componente.Categoria))
+                {
+                    getComponente("DELIMITADOR");
+                    Ordenadores();
+                }
+            }
+
+            depurarGramatica("Finalizando evaluación regla <Criterio>");
+        }
+
+        private void depurarGramatica(String mensaje)
         {
             if (depurar)
             {
-                MessageBox.Show(mensage);
+                MessageBox.Show(mensaje);
             }
         }
 
         private void imprimirDerivacion()
         {
-            cadenaCategorias += "->" + componente.Categoria;
-            cadenaLexemas += "->" + componente.Lexema;
-            depurarGramatica(cadenaCategorias + "\n" + cadenaLexemas);
+            cadenaCategorias = cadenaCategorias + "->" + componente.Categoria;
+            cadenaLemexas = cadenaLemexas + "->" + componente.Lexema;
+            depurarGramatica(cadenaCategorias + "\n" + cadenaLemexas);
         }
 
-        private void pedirComponente(String categoriaValida)
+        private void getComponente(String categoriaValida)
         {
-            if(componente.Categoria.Equals(categoriaValida))
+            if (componente.Categoria.Equals(categoriaValida))
             {
                 imprimirDerivacion();
-                componente = analex.analizar();
+                componente = analisisLexico.analizar();
             }
             else
             {
-                causa = "Se esperaba " + categoriaValida + "y recibio " + componente.Categoria;
-                falla = "Problemas en la validacion de la gramatica que no la hace valida";
-                solucion = "Asegure que se tenga " + categoriaValida + " en el lugar donde se ha presentado el error";
+                String causa = "Se esperaba " + categoriaValida + " y recibí " + componente.Categoria;
+                String falla = "Problemas en la validacion de la gramatica que no la hace valida";
+                String solucion = "Asegure que se tenga " + categoriaValida + " en el lugar donde se ha presentado el problema";
                 ManejadorErrores.obtenerManejadorErrores().agregarError(formarError(componente.Lexema, causa, falla, solucion));
             }
         }
 
-        private Error formarError(String lexema, String causa, String falla, String solucion)
+        private Error formarError(String Lexema, String Causa, String Falla, String Solucion)
         {
-            return Error.Crear(lexema, "Error", componente.numeroLinea, componente.posicionInicial, componente.posicionFinal, 
-                causa, falla, solucion, TipoError.SINTACTICO);
+            return Error.Crear(Lexema, "Error", componente.numeroLinea, componente.posicionInicial,
+                componente.posicionFinal, Causa, Falla, Solucion, TipoError.SINTACTICO);
         }
     }
 }
