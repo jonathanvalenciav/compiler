@@ -27,8 +27,7 @@ namespace LecturaDeTextos.AnalizadorSintactico
 
             try
             {
-                depurar = false;
-                depurarOperacion = true;
+                depurar = true;
                 depurarGramatica("Iniciando analisis sintáctico");
                 cadenaCategorias = "";
                 cadenaLexemas = "";

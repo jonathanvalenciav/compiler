@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using LecturaDeTextos.Transversal;
 using LecturaDeTextos.AnalizadorLexico;
@@ -19,8 +12,7 @@ namespace LecturaDeTextos
         public Form1()
         {
             InitializeComponent();
-        }
-        
+        }        
         
         private void buttonCargarConsola_Click_1(object sender, EventArgs e)
         {
@@ -59,17 +51,10 @@ namespace LecturaDeTextos
             Transversal.TablaSimbolos.limpiarTabla();
             Cache.obtenerCache().limpiarCache();
             MessageBox.Show("Analisís restablecido.");
-
-
-
-
         }
 
-
         private void button1_Click(object sender, EventArgs e)
-        {
-            
-            // CODIGO
+        {            
             AnalisisLexico analex = new AnalisisLexico();
 
             try
@@ -77,8 +62,7 @@ namespace LecturaDeTextos
                 ComponenteLexico tmp = analex.analizar();
                 int fila = 0;
                 while (!"@EOF@".Equals(tmp.Lexema))
-                {
-                    
+                {                    
                     TablaSimbolos.Rows.Add();
                    
                     TablaSimbolos[0, fila].Value = fila + 1;
@@ -90,22 +74,12 @@ namespace LecturaDeTextos
                     TablaSimbolos[6, fila].Value = tmp.posicionFinal;
                     fila++;
 
-
-
-
                     TablaErrores.DataSource = ManejadorErrores.obtenerManejadorErrores().ObtenerErroresTotales();
                     TablaReservadas.DataSource = TablaPalabrasReservadas.obtenerTablaPalabrasReservadas().obtenerPalabrasReservadas();
                     tmp = analex.analizar();
-                    
-
-                    //MessageBox.Show(tmp.Imprimir());
-
-
-
                 }
               
             }
-
             catch (Exception exp)
             {
                 MessageBox.Show(exp.Message);
@@ -114,12 +88,9 @@ namespace LecturaDeTextos
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // CODIGO
-                AnalisisSintatico analix = new AnalisisSintatico();
-                analix.analizar();
-
+            AnalisisSintactico analix = new AnalisisSintactico();
+            analix.analizar();
+            TablaErrores.DataSource = ManejadorErrores.obtenerManejadorErrores().ObtenerErroresTotales();
         }
-
-
     }
 }
