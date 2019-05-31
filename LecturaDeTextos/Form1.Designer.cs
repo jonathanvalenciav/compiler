@@ -119,7 +119,7 @@
             this.textBoxPorConsola.Name = "textBoxPorConsola";
             this.textBoxPorConsola.Size = new System.Drawing.Size(458, 200);
             this.textBoxPorConsola.TabIndex = 11;
-            this.textBoxPorConsola.TextChanged += new System.EventHandler(this.textBoxPorConsola_TextChanged);
+          
             // 
             // tabControl1
             // 
